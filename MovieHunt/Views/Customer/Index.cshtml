@@ -1,0 +1,30 @@
+﻿@model IEnumerable<MovieHunt.Models.Customer>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Customer</h1>
+<table class="table table-condensed">
+    
+    <thead >
+    <tr class="success">
+        <th>Customer</th>
+        <th>Membership Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var customer in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(customer.Name, "Details", "Customer", new { id = customer.Id },null)
+
+            </td>
+            <td>
+                @customer.MembershipType.MembershipTypeName
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
