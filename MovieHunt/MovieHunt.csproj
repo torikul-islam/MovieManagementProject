@@ -246,6 +246,10 @@
     <Compile Include="Migrations\201807241648141_AddIsSubscribeToNewslatter.Designer.cs">
       <DependentUpon>201807241648141_AddIsSubscribeToNewslatter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807241916139_AddMovieProperty.cs" />
+    <Compile Include="Migrations\201807241916139_AddMovieProperty.Designer.cs">
+      <DependentUpon>201807241916139_AddMovieProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -377,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807241648141_AddIsSubscribeToNewslatter.resx">
       <DependentUpon>201807241648141_AddIsSubscribeToNewslatter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807241916139_AddMovieProperty.resx">
+      <DependentUpon>201807241916139_AddMovieProperty.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

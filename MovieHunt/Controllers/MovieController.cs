@@ -40,10 +40,7 @@ namespace MovieHunt.Controllers
             return View(movie);
         }
 
-        public ActionResult New()
-        {
-
-        }
+        
 
     }
 }
