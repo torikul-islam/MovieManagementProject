@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MovieHunt
 {
@@ -9,6 +11,8 @@ namespace MovieHunt
     {
         public static void Register(HttpConfiguration config)
         {
+
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

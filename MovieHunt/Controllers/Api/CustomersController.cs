@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Description;
+using AutoMapper;
+using MovieHunt.DTOs;
 using MovieHunt.Models;
 
 namespace MovieHunt.Controllers.Api
@@ -19,13 +21,13 @@ namespace MovieHunt.Controllers.Api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Customers
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerDto> GetCustomers()
         {
-            return db.Customers.ToList();
+            return db.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
         }
 
         // GET: api/Customers/5
-        public Customer GetCustomer(int id)
+        public CustomerDto GetCustomer(int id)
         {
             var customer =  db.Customers.SingleOrDefault(c => c.Id == id);
             if (customer == null)
@@ -33,25 +35,26 @@ namespace MovieHunt.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return customer;
+            return Mapper.Map<Customer, CustomerDto>(customer);
         }
         // POST: api/Customers
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public CustomerDto CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
+            var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
             db.Customers.Add(customer);
             db.SaveChangesAsync();
-
-            return customer;
+            customerDto.Id = customer.Id;
+            return customerDto;
         }
         // PUT: api/Customers/1
         [HttpPut]
-        public void UpdateCustomer(int id, Customer customer)
+        public void UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
@@ -62,15 +65,10 @@ namespace MovieHunt.Controllers.Api
             if(customerInDb == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
-            customerInDb.Name = customer.Name;
-            customerInDb.BirthDate = customer.BirthDate;
-            customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            Mapper.Map(customerDto, customerInDb);
             db.SaveChanges();
 
         }
-
-
 
         // DELETE: api/Customers/5
         [HttpDelete]
