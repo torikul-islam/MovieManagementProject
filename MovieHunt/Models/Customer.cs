@@ -24,6 +24,7 @@ namespace MovieHunt.Models
         public byte MembershipTypeId { get; set; }
 
         [DisplayName("Date of Birth")]
+        [Min18IfAMember]
         public DateTime? BirthDate { get; set; }
 
 
