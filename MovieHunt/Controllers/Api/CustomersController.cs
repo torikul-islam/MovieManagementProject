@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MovieHunt.Models;
@@ -18,97 +19,78 @@ namespace MovieHunt.Controllers.Api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        public IEnumerable<Customer> GetCustomers()
         {
-            return db.Customers;
+            return db.Customers.ToList();
         }
 
         // GET: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> GetCustomer(int id)
+        public Customer GetCustomer(int id)
         {
-            Customer customer = await db.Customers.FindAsync(id);
+            var customer =  db.Customers.SingleOrDefault(c => c.Id == id);
             if (customer == null)
             {
-                return NotFound();
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return Ok(customer);
+            return customer;
         }
-
-        // PUT: api/Customers/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutCustomer(int id, Customer customer)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != customer.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(customer).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
         // POST: api/Customers
-        [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> PostCustomer(Customer customer)
+        [HttpPost]
+        public Customer CreateCustomer(Customer customer)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
             db.Customers.Add(customer);
-            await db.SaveChangesAsync();
+            db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.Id }, customer);
+            return customer;
         }
-
-        // DELETE: api/Customers/5
-        [ResponseType(typeof(Customer))]
-        public async Task<IHttpActionResult> DeleteCustomer(int id)
+        // PUT: api/Customers/1
+        [HttpPut]
+        public void UpdateCustomer(int id, Customer customer)
         {
-            Customer customer = await db.Customers.FindAsync(id);
-            if (customer == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            db.Customers.Remove(customer);
-            await db.SaveChangesAsync();
+            var customerInDb =db.Customers.SingleOrDefault(c => c.Id == id);
+            if(customerInDb == null)
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
 
-            return Ok(customer);
+            customerInDb.Name = customer.Name;
+            customerInDb.BirthDate = customer.BirthDate;
+            customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            db.SaveChanges();
+
+        }
+
+
+
+        // DELETE: api/Customers/5
+        [HttpDelete]
+        public void DeleteCustomer(int id)
+        {
+            var customerInDb = db.Customers.SingleOrDefault(c => c.Id == id);
+            if (customerInDb == null)
+            {
+
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            db.Customers.Remove(customerInDb);
+            db.SaveChangesAsync();
+
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+           db.Dispose();
         }
 
         private bool CustomerExists(int id)
