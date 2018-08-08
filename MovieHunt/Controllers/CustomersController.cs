@@ -16,10 +16,9 @@ namespace MovieHunt.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Customers
-        public async Task<ActionResult> Index()
+        public  ActionResult Index()
         {
-            var customers = db.Customers.Include(c => c.MembershipType);
-            return View(await customers.ToListAsync());
+            return View();
         }
 
         // GET: Customers/Details/5
@@ -40,7 +39,7 @@ namespace MovieHunt.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
-            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "MembershipTypeName");
+            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "Name");
             return View();
         }
 
@@ -55,7 +54,7 @@ namespace MovieHunt.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "MembershipTypeName", customer.MembershipTypeId);
+            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "Name", customer.MembershipTypeId);
             return View(customer);
         }
 
@@ -71,7 +70,7 @@ namespace MovieHunt.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "MembershipTypeName", customer.MembershipTypeId);
+            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "Name", customer.MembershipTypeId);
             return View(customer);
         }
 
@@ -85,35 +84,12 @@ namespace MovieHunt.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "MembershipTypeName", customer.MembershipTypeId);
+            ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "Name", customer.MembershipTypeId);
             return View(customer);
         }
 
-        // GET: Customers/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customer customer = await db.Customers.FindAsync(id);
-            if (customer == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customer);
-        }
+        
 
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            Customer customer = await db.Customers.FindAsync(id);
-            db.Customers.Remove(customer);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing)
         {

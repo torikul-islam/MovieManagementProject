@@ -5,11 +5,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.UI.WebControls;
 using AutoMapper;
 using MovieHunt.DTOs;
 using MovieHunt.Models;
@@ -21,15 +19,22 @@ namespace MovieHunt.Controllers.Api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Customers
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
-            return db.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+            var customerDto = db.Customers
+                .Include(c => c.MembershipType)
+                .ToList()
+                .Select(Mapper.Map<Customer, CustomerDto>);
+            return Ok(customerDto);
         }
 
         // GET: api/Customers/5
         public IHttpActionResult GetCustomer(int id)
         {
-            var customer =  db.Customers.SingleOrDefault(c => c.Id == id);
+            var customer =  db.Customers
+                .Include(c =>c.MembershipType)
+                .SingleOrDefault(c => c.Id == id);
+
             if (customer == null)
             {
                 return NotFound();

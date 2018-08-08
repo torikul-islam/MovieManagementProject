@@ -1,4 +1,10 @@
-﻿@model MovieHunt.Models.Customer
+﻿$.ajax({
+url: "/api/Customers/" + button.attr("data-customer-id"),
+method: "DELETE",
+success: function () {
+button.parents("tr").remove();
+}
+});@model MovieHunt.Models.Customer
 
 @{
     ViewBag.Title = "Create";
