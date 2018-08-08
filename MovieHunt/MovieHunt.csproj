@@ -271,6 +271,10 @@
     <Compile Include="Migrations\201807291634021_MembershipTypeNameChange.Designer.cs">
       <DependentUpon>201807291634021_MembershipTypeNameChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808081711417_SeedUserRole.cs" />
+    <Compile Include="Migrations\201808081711417_SeedUserRole.Designer.cs">
+      <DependentUpon>201808081711417_SeedUserRole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -590,6 +594,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807291634021_MembershipTypeNameChange.resx">
       <DependentUpon>201807291634021_MembershipTypeNameChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808081711417_SeedUserRole.resx">
+      <DependentUpon>201808081711417_SeedUserRole.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
