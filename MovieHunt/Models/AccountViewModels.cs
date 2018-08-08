@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MovieHunt.Models
@@ -64,6 +65,10 @@ namespace MovieHunt.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [DisplayName("Driving License")]
+        public string DrivingLicense { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

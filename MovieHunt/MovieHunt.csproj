@@ -275,6 +275,10 @@
     <Compile Include="Migrations\201808081711417_SeedUserRole.Designer.cs">
       <DependentUpon>201808081711417_SeedUserRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808081734420_addDrivingLicense.cs" />
+    <Compile Include="Migrations\201808081734420_addDrivingLicense.Designer.cs">
+      <DependentUpon>201808081734420_addDrivingLicense.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -598,6 +602,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808081711417_SeedUserRole.resx">
       <DependentUpon>201808081711417_SeedUserRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808081734420_addDrivingLicense.resx">
+      <DependentUpon>201808081734420_addDrivingLicense.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
