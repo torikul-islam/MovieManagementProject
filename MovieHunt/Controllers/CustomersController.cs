@@ -15,13 +15,16 @@ namespace MovieHunt.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Customers
+        
         public  ActionResult Index()
         {
-            return View();
+            if (User.IsInRole("CanManageMovie"))
+                return View("Index");
+            return View("RealOnlyCustomer");
         }
 
         // GET: Customers/Details/5
+        [Authorize(Roles = "CanManageMovie")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,7 +39,7 @@ namespace MovieHunt.Controllers
             return View(customer);
         }
 
-        // GET: Customers/Create
+        [Authorize(Roles = "CanManageMovie")]
         public ActionResult Create()
         {
             ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "Name");
@@ -45,6 +48,7 @@ namespace MovieHunt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CanManageMovie")]
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,IsSubscribedToNewsletter,MembershipTypeId,BirthDate")] Customer customer)
         {
             if (ModelState.IsValid)
@@ -59,6 +63,7 @@ namespace MovieHunt.Controllers
         }
 
         // GET: Customers/Edit/5
+        [Authorize(Roles = "CanManageMovie")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,6 +81,7 @@ namespace MovieHunt.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CanManageMovie")]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name,IsSubscribedToNewsletter,MembershipTypeId,BirthDate")] Customer customer)
         {
             if (ModelState.IsValid)
@@ -87,9 +93,6 @@ namespace MovieHunt.Controllers
             ViewBag.MembershipTypeId = new SelectList(db.MembershipTypes, "Id", "Name", customer.MembershipTypeId);
             return View(customer);
         }
-
-        
-
 
         protected override void Dispose(bool disposing)
         {
